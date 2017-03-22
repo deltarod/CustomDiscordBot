@@ -1,10 +1,11 @@
+import Commands.Command;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.api.events.EventSubscriber;
 import sx.blah.discord.handle.impl.events.MessageReceivedEvent;
 import sx.blah.discord.handle.impl.events.ReadyEvent;
 import sx.blah.discord.handle.obj.IMessage;
 import sx.blah.discord.handle.obj.Status;
-
+import Commands.*;
 /**
  * Created by Tristan on 3/21/2017.
  */

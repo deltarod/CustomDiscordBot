@@ -35,7 +35,7 @@ class Cfg{
             //gets command prefix
             System.out.println("Please enter the command prefix: ");
             String prefix = scanner.nextLine();
-            System.out.println("Command prefix: " + prefix);
+            System.out.println("Commands.Command prefix: " + prefix);
             prop.setProperty("prefix",prefix);
 
 
