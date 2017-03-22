@@ -1,5 +1,6 @@
 My custom discord bot, commands are VERY basic for now
 
+![alt text](https://cdn.discordapp.com/avatars/105555777107841024/1a7d122e5e343173d53ed509f8f7afb9.png)
 
 Here is my pom for maven
 ```xml

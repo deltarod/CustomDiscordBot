@@ -8,6 +8,8 @@ class Cfg{
     OutputStream output;
     InputStream input;
     //creates new cfg.properties
+
+    // TODO: 3/22/2017 read, create, and a common propertyReader
     public void cfgCreate(){
         Scanner scanner = new Scanner(System.in);
 
@@ -25,8 +27,8 @@ class Cfg{
             String homeChannel = scanner.nextLine();
             System.out.println("Home Channel: " + homeChannel);
             prop.setProperty("HomeChannel",homeChannel);
-            //gets startup message
-            System.out.println("Please enter the startup message: ");
+            //gets startup Message
+            System.out.println("Please enter the startup Message: ");
             String startup = scanner.nextLine();
             System.out.println("Startup Message: " + startup);
             prop.setProperty("Startup",startup);
@@ -72,7 +74,7 @@ class Cfg{
         read();
         String startup = prop.getProperty("Startup");
 
-        System.out.println("Your startup message is: " + startup);
+        System.out.println("Your startup Message is: " + startup);
 
         return startup;
     }
