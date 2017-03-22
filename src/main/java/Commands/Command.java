@@ -1,15 +1,14 @@
 package Commands;
 
-import Commands.ICommand;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.handle.obj.IMessage;
-
 
 import java.util.HashMap;
 import java.util.Map;
 
 
 public class Command {
+    // TODO: 3/22/2017 Some way of dealing with roles
     Map<String, ICommand> commandMap = new HashMap<>();
 
     public Command(){
@@ -37,12 +36,11 @@ public class Command {
 
     public String getCommands(){
         //pulls all commands from the commandMap
-        // TODO: 3/22/2017 Change to foreach loop
-       Object[] commands = commandMap.keySet().toArray();
-       String cmdString = "Here are all the getCommands: ";
-       for(int i = 0; i < commands.length;i++){
-           cmdString += commands[i] + " ";
-       }
+        String cmdString = "Here are all the getCommands: ";
+        for(String command : commandMap.keySet()){
+           cmdString += command + " ";
+        }
+
        return cmdString;
     }
 

@@ -10,7 +10,10 @@ import sx.blah.discord.util.MessageBuilder;
 class Message {
     public void builder(IDiscordClient client, IChannel channel, String contents){
         try {
-            new MessageBuilder(client).withChannel(channel).withContent(contents).send();
+            new MessageBuilder(client)
+                    .withChannel(channel)
+                    .withContent(contents)
+                    .send();
         }
         catch (Exception e){}
     }
