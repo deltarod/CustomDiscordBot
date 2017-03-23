@@ -15,6 +15,7 @@ public class Command {
         commandMap.put("purge",new Purge());
         commandMap.put("help",new Help());
         commandMap.put("eta",new Eta());
+        commandMap.put("play",new Play());
 
     }
 
