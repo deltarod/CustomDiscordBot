@@ -12,8 +12,7 @@ class Message {
         try {
             new MessageBuilder(client)
                     .withChannel(channel)
-                    .withContent(contents)
-                    .send();
+                    .withContent(contents).send();
         }
         catch (Exception e){}
     }

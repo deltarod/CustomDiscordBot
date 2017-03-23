@@ -1,13 +1,12 @@
 import Commands.Command;
+import Commands.R9K;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.api.events.EventSubscriber;
 import sx.blah.discord.handle.impl.events.MessageReceivedEvent;
 import sx.blah.discord.handle.impl.events.ReadyEvent;
 import sx.blah.discord.handle.obj.IMessage;
 import sx.blah.discord.handle.obj.Status;
-/**
- * Created by Tristan on 3/21/2017.
- */
+
 public class AnnotationListener{
     IDiscordClient client;
     IMessage currentMessage;
@@ -23,6 +22,7 @@ public class AnnotationListener{
         command = new Command();
     }
 
+
     @EventSubscriber
     public void onReadyEvent(ReadyEvent event){
         client.changeStatus(Status.game("The Purge"));
@@ -31,8 +31,12 @@ public class AnnotationListener{
     @EventSubscriber
     public void onMessageReceived(MessageReceivedEvent event){
         currentMessage=event.getMessage();
+        R9K r9k = command.getR9K();
         if(currentMessage.getContent().startsWith(prefix)){
             command.run(currentMessage.getContent(),client,currentMessage);
+        }
+        else if(r9k.isR9k){
+            r9k.handle();
         }
 
     }

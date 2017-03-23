@@ -12,14 +12,11 @@ public class Purge implements ICommand {
         //gets the message the command comes from
         Message msg = new Message();
         IChannel channel = message.getChannel();
-        int parsedInt = 0;
+        IntParse parse = new IntParse();
+        int parsedInt = parse.parseInt(args,msg,client,channel);
         //parses the args
-        try{
-            parsedInt = Integer.parseInt(args);
-        }
-        catch (NumberFormatException e){
-            msg.builder(client,channel,"Please enter a number instead");
-        }
+
+
         if (parsedInt<1&&parsedInt!=0){
             msg.builder(client,channel,"Please enter a number over 1");
 
@@ -34,12 +31,8 @@ public class Purge implements ICommand {
                 //gets latest x amount of messages, not sure bot both set and load are needed.
                 list.setCacheCapacity(parsedInt);
                 list.load(parsedInt);
-            } catch (Exception e) {}
-
-            try{
                 list.bulkDelete(list);
-            }
-            catch (Exception e){}
+            } catch (Exception e) {}
 
         }
     }

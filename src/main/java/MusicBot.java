@@ -24,7 +24,8 @@ public class MusicBot {
             e.printStackTrace();
         }
         EventDispatcher dispatcher = client.getDispatcher();
-        dispatcher.registerListener(new AnnotationListener(client,channel,startup,prefix));
+        AnnotationListener anno = new AnnotationListener(client,channel,startup,prefix);
+        dispatcher.registerListener(anno);
     }
 
 
