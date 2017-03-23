@@ -13,7 +13,7 @@ public class R9K implements ICommand {
     IntParse parse = new IntParse();
     Message msg = new Message();
     IChannel channel;
-    MessageList list = channel.getMessages();
+    MessageList list;
 
     @Override
     public void run(IDiscordClient client, String args, IMessage message) {
@@ -43,13 +43,35 @@ public class R9K implements ICommand {
 
     }
 
-    // TODO: 3/23/2017 R9K handling 
-    public void handle(){
+
+    public void handle(IMessage message){
+        //pulls latest messages on call
+        list = message
+                .getChannel()
+                .getMessages();
+        //sets capacity then loads
         list.setCacheCapacity(limit);
         try {
             list.load(limit);
+            list.remove(message);
         }catch (Exception e){}
-        
+        // TODO: 3/23/2017 Get the list updating, works but the list wont update 
+        for(IMessage loopMsg : list){
+            if(loopMsg.getContent().equals(message.getContent())) {
+                try {
+                    message.delete();
+                    try {
+                        message
+                                .getAuthor()
+                                .getOrCreatePMChannel()
+                                .sendMessage("This server is in Robot9K mode, Messages must be unique");
+                    }
+                    catch (Exception ex) {}
+                    break;
+                }
+                catch (Exception e) {}
+            }
+        }
     }
 
 

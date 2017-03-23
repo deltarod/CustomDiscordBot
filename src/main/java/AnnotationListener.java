@@ -36,7 +36,7 @@ public class AnnotationListener{
             command.run(currentMessage.getContent(),client,currentMessage);
         }
         else if(r9k.isR9k){
-            r9k.handle();
+            r9k.handle(currentMessage);
         }
 
     }
