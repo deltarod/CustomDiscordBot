@@ -10,11 +10,9 @@ public class IntParse {
         try{
             parsedInt = Integer.parseInt(args);
         }
-        catch (NumberFormatException e){
-            msg.builder(client,channel,"Please enter a number instead");
-        }
+        catch (NumberFormatException e){}
         if (parsedInt<1){
-            msg.builder(client,channel,"Please enter a number greater than or equal to 1");
+            msg.builder(client,channel,"Please enter a valid number");
         }
         return parsedInt;
     }

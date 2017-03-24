@@ -10,7 +10,7 @@ import sx.blah.discord.handle.obj.IMessage;
 class Help implements ICommand{
     @Override
     public void run(IDiscordClient client, String args, IMessage message) {
-        String commands = new Command().getCommands();
+        String commands = new CommandHandler().getCommands();
         IChannel channel = message.getChannel();
         new Message().builder(client,channel,commands);
 

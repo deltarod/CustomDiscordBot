@@ -7,19 +7,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class Command {
+public class CommandHandler {
     // TODO: 3/22/2017 Some way of dealing with roles
     // TODO: 3/22/2017 implement r9k mode
     Map<String, ICommand> commandMap = new HashMap<>();
-    R9K r9k;
 
-    public Command(){
-        r9k = new R9K();
+    public CommandHandler(){
         commandMap.put("purge",new Purge());
         commandMap.put("help",new Help());
         commandMap.put("eta",new Eta());
-        commandMap.put("play",new Play());
-        commandMap.put("r9k",r9k);
+        commandMap.put("r9k",new R9K());
     }
 
 
@@ -33,7 +30,7 @@ public class Command {
             command.run(client, commandVar[1], message);
         }
         catch (NullPointerException e){
-            new Message().builder(client, message.getChannel(), "Invalid Command");
+            new Message().builder(client, message.getChannel(), "Invalid CommandHandler");
         }
 
     }
@@ -48,7 +45,7 @@ public class Command {
        return cmdString;
     }
     public R9K getR9K(){
-        return r9k;
+        return (R9K)commandMap.get("r9k");
     }
 
     private String[] stringSplit(String string){
