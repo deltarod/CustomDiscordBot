@@ -15,4 +15,9 @@ class Help implements ICommand{
         new Message().builder(client,channel,commands);
 
     }
+
+    @Override
+    public String requiredPerms(IDiscordClient client, IMessage message) {
+        return null;
+    }
 }

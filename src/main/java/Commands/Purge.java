@@ -21,4 +21,9 @@ public class Purge implements ICommand {
             history.bulkDelete();
         }
     }
+
+    @Override
+    public String requiredPerms(IDiscordClient client, IMessage message) {
+        return "admin";
+    }
 }

@@ -41,6 +41,10 @@ public class R9K implements ICommand {
 
     }
 
+    @Override
+    public String requiredPerms(IDiscordClient client, IMessage message) {
+        return "admin";
+    }
 
     public void handle(IMessage message){
         //pulls latest messages on call

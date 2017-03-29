@@ -35,8 +35,14 @@ class Cfg{
             //gets command prefix
             System.out.println("Please enter the command prefix: ");
             String prefix = scanner.nextLine();
-            System.out.println("Commands.CommandHandler prefix: " + prefix);
+            System.out.println("Command prefix: " + prefix);
             prop.setProperty("prefix",prefix);
+
+            System.out.println("Please enter the owner ID: ");
+            String owner = scanner.nextLine();
+            System.out.println("Owner id: " + owner);
+            prop.setProperty("owner",owner);
+
 
 
             prop.store(output, null);
@@ -86,6 +92,14 @@ class Cfg{
         System.out.println("Your prefix is: " + prefix);
 
         return prefix;
+    }
+
+    public String ownerRead(){
+        read();
+        String owner = prop.getProperty("owner");
+
+        System.out.println("Your owner ID is: " + owner);
+        return owner;
     }
 
 

@@ -12,6 +12,7 @@ public class CommandHandler {
     // TODO: 3/22/2017 implement r9k mode
     Map<String, ICommand> commandMap = new HashMap<>();
 
+
     public CommandHandler(){
         commandMap.put("purge",new Purge());
         commandMap.put("help",new Help());

@@ -17,6 +17,7 @@ public class AnnotationListener{
     String homeChannel;
     String startup;
     String prefix;
+    R9K r9k;
     Map<String, CommandHandler> guildMap;
 
     AnnotationListener(IDiscordClient client, String HomeChannel, String startup, String prefix){
@@ -25,6 +26,7 @@ public class AnnotationListener{
         this.startup = startup;
         this.prefix = prefix;
         guildMap = new HashMap<>();
+
     }
 
     @EventSubscriber
@@ -47,8 +49,9 @@ public class AnnotationListener{
         currentMessage=event.getMessage();
         CommandHandler command = guildMap.get(currentMessage.getGuild().getID());
 
-        //original code just using the new command pulled from the guildMap
+
         R9K r9k = command.getR9K();
+        //original code just using the new command pulled from the guildMap
         if(currentMessage.getContent().startsWith(prefix)){
             command.run(currentMessage.getContent(),client,currentMessage);
         }

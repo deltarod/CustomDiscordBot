@@ -8,4 +8,5 @@ import sx.blah.discord.handle.obj.IMessage;
  */ //interface for getCommands
 interface ICommand{
     void run(IDiscordClient client, String args, IMessage message);
+    String requiredPerms(IDiscordClient client, IMessage message);
 }
