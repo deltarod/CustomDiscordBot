@@ -9,7 +9,7 @@ class Cfg{
     InputStream input;
     //creates new cfg.properties
 
-    // TODO: 3/22/2017 read, create, and a common propertyReader
+    // TODO: 3/22/2017 read, write, and a common propertyReader
     public void cfgCreate(){
         Scanner scanner = new Scanner(System.in);
 
@@ -38,11 +38,6 @@ class Cfg{
             System.out.println("Command prefix: " + prefix);
             prop.setProperty("prefix",prefix);
 
-            System.out.println("Please enter the owner ID: ");
-            String owner = scanner.nextLine();
-            System.out.println("Owner id: " + owner);
-            prop.setProperty("owner",owner);
-
 
 
             prop.store(output, null);
@@ -58,6 +53,7 @@ class Cfg{
         catch (IOException e){}
     }
     //loads token
+
     public String tokenRead(){
         read();
         String token;
@@ -93,14 +89,5 @@ class Cfg{
 
         return prefix;
     }
-
-    public String ownerRead(){
-        read();
-        String owner = prop.getProperty("owner");
-
-        System.out.println("Your owner ID is: " + owner);
-        return owner;
-    }
-
 
 }

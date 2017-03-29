@@ -1,4 +1,4 @@
-package Commands;
+package Commands.Util;
 
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.handle.obj.IChannel;

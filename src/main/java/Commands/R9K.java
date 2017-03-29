@@ -1,5 +1,8 @@
 package Commands;
 
+import Commands.Util.GuildCfg;
+import Commands.Util.IntParse;
+import Commands.Util.Message;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IMessage;
@@ -14,7 +17,7 @@ public class R9K implements ICommand {
     Message msg = new Message();
 
     @Override
-    public void run(IDiscordClient client, String args, IMessage message) {
+    public void run(IDiscordClient client, GuildCfg cfg, String args, IMessage message) {
         IChannel channel = message.getChannel();
 
         if (args == null) {
@@ -41,11 +44,24 @@ public class R9K implements ICommand {
 
     }
 
+
     @Override
-    public String requiredPerms(IDiscordClient client, IMessage message) {
+    public String getRole() {
         return "admin";
     }
 
+    @Override
+    public String getDesc() {
+        return "Switches Server into Robot9k mode," +
+                " Where messages must be unique." +
+                " Use (Command Prefix)r9k X, X being amount of messages," +
+                " To set how far to look back per message.";
+    }
+
+
+
+
+    //handles the checking for nonunique messages
     public void handle(IMessage message){
         //pulls latest messages on call
         MessageHistory history = message.getChannel().getMessageHistory(limit+1);
