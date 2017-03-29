@@ -18,7 +18,7 @@ public class CommandHandler {
     private GuildCfg cfg;
 
 
-    public CommandHandler(IGuild guild){
+    public CommandHandler(IGuild guild) {
         cfg = new GuildCfg(guild);
         // TODO: 3/29/2017 More commands, expand upon current
         // TODO: 3/29/2017 Audio clip player on command maybe
@@ -26,13 +26,13 @@ public class CommandHandler {
         commandMap.put("purge", new Purge());
         commandMap.put("help", new Help());
         commandMap.put("eta", new Eta());
-        commandMap.put("r9k", new R9K());
+        commandMap.put("r9k", new R9K(cfg));
         commandMap.put("set", new set());
 
     }
 
 
-    public void run(String input, IDiscordClient client, IMessage message){
+    public void run(String input, IDiscordClient client, IMessage message) {
         input = input.substring(1);
         //contains [0]command and [1]args
         String[] commandVar = new StringSplit().split(input);
@@ -40,28 +40,26 @@ public class CommandHandler {
         //checks if command exists, if not returns breaking the function
         try {
             command = commandMap.get(commandVar[0]);
-        }catch (Exception e){
+        } catch (Exception e) {
             new Message().builder(client, message.getChannel(), "Invalid Command");
             return;
         }
         //checks if perms are good, if so runs command
-        if(checkPerms(command,message)){
+        if (checkPerms(command, message)) {
             command.run(client, cfg, commandVar[1], message);
         }
         //if perms are not good tells them what they need
         else {
             new Message().builder(client,
                     message.getChannel(),
-                    "You do not have the permissions required for "+commandVar[0]);
+                    "You do not have the permissions required for " + commandVar[0]);
         }
 
 
-
-
-
     }
+
     //gets required role for command
-    private boolean checkPerms(ICommand command, IMessage message){
+    private boolean checkPerms(ICommand command, IMessage message) {
         //admin
 
         String roleID = null;
@@ -69,21 +67,20 @@ public class CommandHandler {
         List<IRole> list = message.getAuthor().getRolesForGuild(message.getGuild());
         //gets roleID and owner, might be null if not configured.
         try {
-            roleID = cfg.getId(command.getRole());
-            owner = cfg.getId("owner");
-        }catch (Exception e){
+            roleID = cfg.getProp(command.getRole());
+            owner = cfg.getProp("owner");
+        } catch (Exception e) {
         }
-        if(command.getRole()==null){
+        if (command.getRole() == null) {
             return true;
         }
-        if(owner!=null){
-            if(owner.equals(message.getAuthor().getID())) {
+        if (owner != null) {
+            if (owner.equals(message.getAuthor().getID())) {
                 return true;
             }
-        }
-        else{
-            for(IRole role : list){
-                if(role.getID().equals(roleID)){
+        } else {
+            for (IRole role : list) {
+                if (role.getID().equals(roleID)) {
                     return true;
                 }
             }
@@ -93,24 +90,24 @@ public class CommandHandler {
     }
 
     // TODO: 3/29/2017 add an identifier that shows if a command requires something more than the average user
-    public String getCommands(IMessage message){
+    public String getCommands(IMessage message) {
         //pulls all commands from the commandMap
         String cmdString = "Here are all the commands available to your rank:\n ```";
-        for(String command : commandMap.keySet()){
+        for (String command : commandMap.keySet()) {
             ICommand cmd = commandMap.get(command);
-            if(checkPerms(cmd, message)) {
+            if (checkPerms(cmd, message)) {
                 cmdString += command +
                         " - " + cmd.getDesc() +
                         "\n--------------------------------\n";
             }
         }
         cmdString += "```";
-       return cmdString;
+        return cmdString;
     }
 
     //gets r9k so the listener can react to r9k
-    public R9K getR9K(){
-        return (R9K)commandMap.get("r9k");
+    public R9K getR9K() {
+        return (R9K) commandMap.get("r9k");
     }
 }
 

@@ -14,50 +14,50 @@ public class GuildCfg {
     private String path;
 
     //used to save id's, command handler compares strings
-    public GuildCfg(IGuild guild){
+    public GuildCfg(IGuild guild) {
         //gets file location for where properties will be stored based on guild
-        this.guildId=guild.getID();
+        this.guildId = guild.getID();
         path = "GuildCFG/" + guildId + ".properties";
         cfg = new File(path);
     }
+
     //reads an ID from the .prop file
-    public String getId(String role){
+    public String getProp(String key) {
         read();
-        return prop.getProperty(role.toLowerCase());
+        return prop.getProperty(key.toLowerCase());
 
     }
+
     //sets ID
-    public void setId(String role, String roleId){
+    public void setProp(String key, String value) {
         write();
-        prop.setProperty(role.toLowerCase(), roleId);
+        prop.setProperty(key.toLowerCase(), value);
         try {
             prop.store(output, null);
-        }catch (Exception e){}
+        } catch (Exception e) {
+        }
     }
-
-
 
 
     //write prereqs
-    private void write(){
+    private void write() {
         File dir = new File("GuildCFG/");
-        if(!dir.exists()){
+        if (!dir.exists()) {
             dir.mkdir();
         }
         try {
             output = new FileOutputStream(cfg);
-        }
-        catch (FileNotFoundException e){
+        } catch (FileNotFoundException e) {
 
         }
     }
 
-//creates a class to setup the reading of a file
-    private void read(){
-        try{
+    //creates a class to setup the reading of a file
+    private void read() {
+        try {
             input = new FileInputStream(cfg);
             prop.load(input);
+        } catch (IOException e) {
         }
-        catch (IOException e){}
     }
 }

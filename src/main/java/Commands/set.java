@@ -12,25 +12,25 @@ public class set implements ICommand {
 
     @Override
     public void run(IDiscordClient client, GuildCfg cfg, String args, IMessage message) {
-        this.cfg=cfg;
+        this.cfg = cfg;
         String[] arg = new StringSplit().split(args);
         //some regex stuff to only get numbers, not honestly sure how it works
-        String id = arg[1].replaceAll("[^0-9]","");
+        String id = arg[1].replaceAll("[^0-9]", "");
 
         //checks first arg
-        if(arg[0].equals("admin")){
-            cfg.setId("admin",id);
+        if (arg[0].equals("admin")) {
+            cfg.setProp("admin", id);
         }
-        if(arg[0].equals("owner")){
-            cfg.setId("owner",id);
+        if (arg[0].equals("owner")) {
+            cfg.setProp("owner", id);
         }
     }
 
     @Override
     public String getRole() {
-        try{
-            cfg.getId("owner");
-        }catch (NullPointerException e){
+        try {
+            cfg.getProp("owner");
+        } catch (NullPointerException e) {
             return null;
         }
         return "owner";

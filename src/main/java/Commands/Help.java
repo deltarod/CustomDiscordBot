@@ -6,7 +6,7 @@ import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IMessage;
 
 
-class Help implements ICommand{
+class Help implements ICommand {
     @Override
     public void run(IDiscordClient client, GuildCfg cfg, String args, IMessage message) {
         String commands = new CommandHandler(message.getGuild()).getCommands(message);

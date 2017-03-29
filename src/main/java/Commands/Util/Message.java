@@ -8,12 +8,12 @@ import sx.blah.discord.util.MessageBuilder;
  * Created by Tlap on 3/22/2017.
  */
 public class Message {
-    public void builder(IDiscordClient client, IChannel channel, String contents){
+    public void builder(IDiscordClient client, IChannel channel, String contents) {
         try {
             new MessageBuilder(client)
                     .withChannel(channel)
                     .withContent(contents).send();
+        } catch (Exception e) {
         }
-        catch (Exception e){}
     }
 }

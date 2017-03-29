@@ -12,7 +12,7 @@ public class MusicBot {
     public String startup;
 
 
-    public MusicBot(String token, String channel, String startup,String prefix){
+    public MusicBot(String token, String channel, String startup, String prefix) {
         ClientBuilder clientBuilder = new ClientBuilder(); // Creates the ClientBuilder instance
         clientBuilder.withToken(token); // Adds the login info to the builder
         this.channel = channel;
@@ -24,7 +24,7 @@ public class MusicBot {
             e.printStackTrace();
         }
         EventDispatcher dispatcher = client.getDispatcher();
-        AnnotationListener anno = new AnnotationListener(client,channel,startup,prefix);
+        AnnotationListener anno = new AnnotationListener(client, channel, startup, prefix);
         dispatcher.registerListener(anno);
     }
 
@@ -32,15 +32,14 @@ public class MusicBot {
     public static void main(String[] args) {
         Cfg config = new Cfg();
         File cfg = new File("cfg.properties");
-        if(!cfg.exists()){
+        if (!cfg.exists()) {
             config.cfgCreate();
         }
         String token = config.tokenRead();
         String homeChannel = config.homeChannelRead();
         String startup = config.startupRead();
         String prefix = config.prefixRead();
-        new MusicBot(token,homeChannel,startup,prefix);
-
+        new MusicBot(token, homeChannel, startup, prefix);
     }
 }
 

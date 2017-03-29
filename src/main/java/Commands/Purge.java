@@ -16,11 +16,11 @@ public class Purge implements ICommand {
         Message msg = new Message();
         IChannel channel = message.getChannel();
         IntParse parse = new IntParse();
-        int parsedInt = parse.parseInt(args, msg, client, channel);
+        int parsedInt = parse.parseInt(args);
         //parses the args
 
-        if(parsedInt >= 1){
-            MessageHistory history = channel.getMessageHistory(parsedInt+1);
+        if (parsedInt >= 1) {
+            MessageHistory history = channel.getMessageHistory(parsedInt + 1);
             history.bulkDelete();
         }
     }

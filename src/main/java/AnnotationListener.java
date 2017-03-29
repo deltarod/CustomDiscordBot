@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class AnnotationListener{
+public class AnnotationListener {
     IDiscordClient client;
     IMessage currentMessage;
     String homeChannel;
@@ -20,7 +20,7 @@ public class AnnotationListener{
     String prefix;
     Map<IGuild, CommandHandler> guildMap;
 
-    AnnotationListener(IDiscordClient client, String HomeChannel, String startup, String prefix){
+    AnnotationListener(IDiscordClient client, String HomeChannel, String startup, String prefix) {
         this.client = client;
         this.homeChannel = HomeChannel;
         this.startup = startup;
@@ -30,40 +30,40 @@ public class AnnotationListener{
     }
 
     @EventSubscriber
-    public void onReadyEvent(ReadyEvent event){
-        client.streaming("The Purge","");
+    public void onReadyEvent(ReadyEvent event) {
+        client.streaming("The Purge", "");
         System.out.println("Ready to go!");
         List<IGuild> list = client.getGuilds();
 
         //cant be in the initialization
 
-        for(IGuild guild : list){
-            guildMap.put(guild,new CommandHandler(guild));
+        for (IGuild guild : list) {
+            guildMap.put(guild, new CommandHandler(guild));
         }
     }
 
     //tells bot what to do when joining a new guild
     @EventSubscriber
-    public void onGuildJoin(GuildCreateEvent event){
+    public void onGuildJoin(GuildCreateEvent event) {
         //adds new guild on join, not requiring a bot restart
-        guildMap.put(event.getGuild(),new CommandHandler(event.getGuild()));
+        guildMap.put(event.getGuild(), new CommandHandler(event.getGuild()));
     }
 
     @EventSubscriber
-    public void onMessageReceived(MessageReceivedEvent event){
+    public void onMessageReceived(MessageReceivedEvent event) {
         //added multiGuild capabilities!
 
         //gets current message and pulls the guild from the guild
-        currentMessage=event.getMessage();
+        currentMessage = event.getMessage();
         CommandHandler command = guildMap.get(currentMessage.getGuild());
 
         R9K r9k = command.getR9K();
         //original code just using the new command pulled from the guildMap
-        if(currentMessage.getContent().startsWith(prefix)){
-            command.run(currentMessage.getContent(),client,currentMessage);
+        if (currentMessage.getContent().startsWith(prefix)) {
+            command.run(currentMessage.getContent(), client, currentMessage);
         }
         //if command skips the r9k check
-        else if(r9k.isR9k){
+        else if (r9k.isR9k) {
             r9k.handle(currentMessage);
         }
     }
