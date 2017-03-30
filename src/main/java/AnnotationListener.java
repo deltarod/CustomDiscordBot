@@ -60,7 +60,7 @@ public class AnnotationListener {
         R9K r9k = command.getR9K();
         //original code just using the new command pulled from the guildMap
         if (currentMessage.getContent().startsWith(prefix)) {
-            command.run(currentMessage.getContent(), client, currentMessage);
+            command.run(currentMessage.getContent().toLowerCase(), client, currentMessage);
         }
         //if command skips the r9k check
         else if (r9k.isR9k) {

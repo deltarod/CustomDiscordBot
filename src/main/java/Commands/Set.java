@@ -6,7 +6,7 @@ import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.handle.obj.IMessage;
 
 
-public class set implements ICommand {
+public class Set implements ICommand {
     GuildCfg cfg;
 
 

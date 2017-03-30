@@ -2,7 +2,7 @@ package Commands.Util;
 
 public class StringSplit {
     //moved StringSplit
-    public String[] split(String string) {
+    public static String[] split(String string) {
 
         String[] returnArr = new String[2];
         //if command is 2 part, splits command and arg

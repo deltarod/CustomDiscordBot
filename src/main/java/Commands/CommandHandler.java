@@ -27,7 +27,8 @@ public class CommandHandler {
         commandMap.put("help", new Help());
         commandMap.put("eta", new Eta());
         commandMap.put("r9k", new R9K(cfg));
-        commandMap.put("set", new set());
+        commandMap.put("set", new Set());
+        commandMap.put("todo",new Todo());
 
     }
 
