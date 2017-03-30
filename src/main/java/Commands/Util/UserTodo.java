@@ -6,16 +6,18 @@ import java.util.LinkedList;
 
 
 public class UserTodo {
-    LinkedList<String>list = new LinkedList<>();
+    LinkedList<String> list = new LinkedList<>();
 
-    public void set(String todo){
+    public void set(String todo) {
         String time = new SimpleDateFormat("yyyy.MM.dd.HH.mm").format(new Date());
         list.add(time + ": " + todo);
     }
-    public LinkedList<String> get(){
+
+    public LinkedList<String> get() {
         return list;
     }
-    public String remove(){
+
+    public String remove() {
         return list.remove();
     }
 }

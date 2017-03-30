@@ -42,13 +42,14 @@ public class GuildCfg {
     }
 
     //Gets Object
-    public Object getObj(String key){
+    public Object getObj(String key) {
         read();
         Object obj = null;
 
-        try{
+        try {
             obj = mapper.readValue(prop.getProperty(key.toLowerCase()), Object.class);
-        }catch (IOException e){}
+        } catch (IOException e) {
+        }
         return obj;
     }
 
@@ -58,9 +59,9 @@ public class GuildCfg {
         write();
         // TODO: 3/29/2017 fix error
         //objAsString is null
-        try{
+        try {
             objAsString = mapper.writeValueAsString(obj);
-        }catch (Exception e){
+        } catch (Exception e) {
         }
 
         prop.setProperty(key.toLowerCase(), objAsString);
