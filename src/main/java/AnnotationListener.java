@@ -31,7 +31,7 @@ public class AnnotationListener {
 
     @EventSubscriber
     public void onReadyEvent(ReadyEvent event) {
-        client.streaming("The Purge", "");
+        client.online("The Purge");
         System.out.println("Ready to go!");
         List<IGuild> list = client.getGuilds();
 

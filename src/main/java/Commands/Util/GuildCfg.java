@@ -59,11 +59,12 @@ public class GuildCfg {
         write();
         // TODO: 3/29/2017 fix error
         //objAsString is null
+
         try {
             objAsString = mapper.writeValueAsString(obj);
         } catch (Exception e) {
         }
-
+        System.out.println(obj + " | " + objAsString);
         prop.setProperty(key.toLowerCase(), objAsString);
         try {
             prop.store(output, null);

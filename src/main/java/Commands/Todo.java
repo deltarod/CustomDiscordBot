@@ -43,7 +43,6 @@ public class Todo implements ICommand {
             }
             //sets todos then saves to cfg
             todo.set(arg[1]);
-            System.out.println(todo.get());
             // TODO: 3/29/2017 throwing nullpointer?
             cfg.setObj(message.getAuthor().getID() + "todo", todo);
             msg.builder(client, message.getChannel(), "Todo set!");
@@ -61,10 +60,10 @@ public class Todo implements ICommand {
         }
         return rtnString;
     }
-
+    //// TODO: 3/30/2017 change to null once complete
     @Override
     public String getRole() {
-        return null;
+        return "owner";
     }
 
     @Override
