@@ -41,38 +41,6 @@ public class GuildCfg {
         }
     }
 
-    //Gets Object
-    public Object getObj(String key) {
-        read();
-        Object obj = null;
-
-        try {
-            obj = mapper.readValue(prop.getProperty(key.toLowerCase()), Object.class);
-        } catch (IOException e) {
-        }
-        return obj;
-    }
-
-    //sets Object
-    public void setObj(String key, Object obj) {
-        String objAsString = null;
-        write();
-        // TODO: 3/29/2017 fix error
-        //objAsString is null
-
-        try {
-            objAsString = mapper.writeValueAsString(obj);
-        } catch (Exception e) {
-        }
-        System.out.println(obj + " | " + objAsString);
-        prop.setProperty(key.toLowerCase(), objAsString);
-        try {
-            prop.store(output, null);
-        } catch (Exception e) {
-        }
-    }
-
-
     //write prereqs
     private void write() {
         File dir = new File("GuildCFG/");
