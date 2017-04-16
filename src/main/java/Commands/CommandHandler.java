@@ -31,8 +31,8 @@ public class CommandHandler {
         commandMap.put("shutdown",new Shutdown());
 
 
-
-        commandMap.put("todo", new Todo());
+        //disabled for jar
+        //commandMap.put("todo", new Todo());
 
     }
 

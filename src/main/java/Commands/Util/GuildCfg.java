@@ -79,6 +79,12 @@ public class GuildCfg {
         if (!dir.exists()) {
             dir.mkdir();
         }
+        if(cfg.exists()){
+            read();
+            try {
+                input.close();
+            }catch (Exception e){}
+        }
         try {
             output = new FileOutputStream(cfg);
         } catch (FileNotFoundException e) {

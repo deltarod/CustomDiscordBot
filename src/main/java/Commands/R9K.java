@@ -31,12 +31,9 @@ public class R9K implements ICommand {
     @Override
     public void run(IDiscordClient client, GuildCfg cfg, String args, IMessage message) {
         IChannel channel = message.getChannel();
-        //if args is limit returns the limit
-        if (args.equals("limit")) {
-            msg.builder(client, channel, "R9k limit is " + cfg.getProp("r9klim"));
-        }
+
         //if args is null, toggles r9k mode
-        else if (args == null) {
+        if (args == null) {
             isR9k = !isR9k;
             String returnMessage;
             //sets r9k message
@@ -44,6 +41,10 @@ public class R9K implements ICommand {
             else returnMessage = "R9K is disabled.";
 
             msg.builder(client, channel, returnMessage);
+        }
+        //if args is limit returns the limit
+        else if (args.equals("limit")) {
+            msg.builder(client, channel, "R9k limit is " + cfg.getProp("r9klim"));
         }
         //sets limit to args
         else {
