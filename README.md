@@ -17,9 +17,11 @@ Working Commands:
  
  Shutdown - Shuts the bot down
  
+ F - F to pay respects
+  
  In Progress:
  
- F - F to pay respects
+
  
  Todo - todo list and reminder
 
