@@ -1,5 +1,6 @@
 import Commands.CommandHandler;
 import Commands.R9K;
+import Commands.Util.GuildCfg;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.api.events.EventSubscriber;
 import sx.blah.discord.handle.impl.events.ReadyEvent;
@@ -38,7 +39,9 @@ public class AnnotationListener {
         //cant be in the initialization
 
         for (IGuild guild : list) {
-            guildMap.put(guild, new CommandHandler(guild));
+            // TODO: 4/29/2017 custom server prefix
+
+            guildMap.put(guild, new CommandHandler(guild, new GuildCfg(guild),prefix));
         }
     }
 
@@ -46,7 +49,7 @@ public class AnnotationListener {
     @EventSubscriber
     public void onGuildJoin(GuildCreateEvent event) {
         //adds new guild on join, not requiring a bot restart
-        guildMap.put(event.getGuild(), new CommandHandler(event.getGuild()));
+        guildMap.put(event.getGuild(), new CommandHandler(event.getGuild(), new GuildCfg(event.getGuild()), prefix));
     }
 
     @EventSubscriber
@@ -56,6 +59,10 @@ public class AnnotationListener {
         //gets current message and pulls the guild from the guild
         currentMessage = event.getMessage();
         CommandHandler command = guildMap.get(currentMessage.getGuild());
+        String setPrefix = command.getPrefix();
+        if(setPrefix != null){
+            prefix = setPrefix;
+        }
 
         R9K r9k = command.getR9K();
         //original code just using the new command pulled from the guildMap

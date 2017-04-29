@@ -17,7 +17,9 @@ public class Shutdown implements ICommand {
     }
 
     @Override
-    public String getDesc() {
-        return "Shuts down the server.";
+    public String getDesc(String prefix) {
+        return "Shuts down the server.\n" +
+                "Usage:\n" +
+                prefix + "shutdown";
     }
 }

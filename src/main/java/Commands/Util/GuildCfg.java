@@ -1,6 +1,5 @@
 package Commands.Util;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import sx.blah.discord.handle.obj.IGuild;
 
 import java.io.*;
@@ -13,15 +12,14 @@ public class GuildCfg {
     private OutputStream output;
     private InputStream input;
     private String path;
-    private ObjectMapper mapper;
 
     //used to save id's, command handler compares strings
     public GuildCfg(IGuild guild) {
         //gets file location for where properties will be stored based on guild
-        this.guildId = guild.getID();
-        mapper = new ObjectMapper();
+        this.guildId = guild.getStringID();
         path = "GuildCFG/" + guildId + ".properties";
         cfg = new File(path);
+
     }
 
     //reads an ID from the .prop file
@@ -35,10 +33,7 @@ public class GuildCfg {
     public void setProp(String key, String value) {
         write();
         prop.setProperty(key.toLowerCase(), value);
-        try {
-            prop.store(output, null);
-        } catch (Exception e) {
-        }
+        finishWrite();
     }
 
     //write prereqs
@@ -57,6 +52,13 @@ public class GuildCfg {
             output = new FileOutputStream(cfg);
         } catch (FileNotFoundException e) {
 
+        }
+    }
+
+    private void finishWrite(){
+        try {
+            prop.store(output, null);
+        } catch (Exception e) {
         }
     }
 

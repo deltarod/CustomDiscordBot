@@ -12,5 +12,5 @@ interface ICommand {
 
     String getRole();
 
-    String getDesc();
+    String getDesc(String prefix);
 }

@@ -7,9 +7,14 @@ import sx.blah.discord.handle.obj.IMessage;
 
 
 class Help implements ICommand {
+    String defaultPrefix;
+
+    Help(String defaultPrefix){
+        this.defaultPrefix = defaultPrefix;
+    }
     @Override
     public void run(IDiscordClient client, GuildCfg cfg, String args, IMessage message) {
-        String commands = new CommandHandler(message.getGuild()).getCommands(message);
+        String commands = new CommandHandler(message.getGuild(), cfg, defaultPrefix).getCommands(message);
         IChannel channel = message.getChannel();
         //sends PM's with command
         message.getAuthor()
@@ -24,7 +29,9 @@ class Help implements ICommand {
     }
 
     @Override
-    public String getDesc() {
-        return "Help command, Pretty self explanatory..";
+    public String getDesc(String prefix) {
+        return "Displays all commands available for current rank\n" +
+                "Usage: \n" +
+                prefix + "help - displays commands";
     }
 }

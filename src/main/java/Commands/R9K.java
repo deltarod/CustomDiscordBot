@@ -76,10 +76,10 @@ public class R9K implements ICommand {
     }
 
     @Override
-    public String getDesc() {
+    public String getDesc(String prefix) {
         return "Switches Server into Robot9k mode," +
                 " Where messages must be unique." +
-                " Use (Command Prefix)r9k X, X being amount of messages," +
+                " Use " + prefix + "r9k X, X being amount of messages," +
                 " To set how far to look back per message.";
     }
 

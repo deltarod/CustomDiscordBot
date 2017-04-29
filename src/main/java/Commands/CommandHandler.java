@@ -16,23 +16,27 @@ import java.util.Map;
 public class CommandHandler {
     private Map<String, ICommand> commandMap = new HashMap<>();
     private GuildCfg cfg;
+    private String defPrefix;
 
 
-    public CommandHandler(IGuild guild) {
-        cfg = new GuildCfg(guild);
+    public CommandHandler(IGuild guild, GuildCfg cfg, String defPrefix) {
+        this.cfg = cfg;
+        this.defPrefix = defPrefix;
         // TODO: 3/29/2017 More commands, expand upon current
         // TODO: 3/29/2017 Audio clip player on command maybe
         //puts all base commands into a map to call from later
         commandMap.put("purge", new Purge());
-        commandMap.put("help", new Help());
+        commandMap.put("help", new Help(defPrefix));
         commandMap.put("eta", new Eta());
         commandMap.put("r9k", new R9K(cfg));
         commandMap.put("set", new Set());
         commandMap.put("shutdown",new Shutdown());
+        commandMap.put("f", new F(cfg));
 
 
 
-        commandMap.put("todo", new Todo());
+        //disabled for jar
+        //commandMap.put("todo", new Todo());
 
     }
 
@@ -41,7 +45,7 @@ public class CommandHandler {
         input = input.substring(1);
         //contains [0]command and [1]args
         String[] commandVar = new StringSplit().split(input);
-        ICommand command = null;
+        ICommand command;
         //checks if command exists, if not returns breaking the function
         try {
             command = commandMap.get(commandVar[0]);
@@ -80,12 +84,12 @@ public class CommandHandler {
             return true;
         }
         if (owner != null) {
-            if (owner.equals(message.getAuthor().getID())) {
+            if (owner.equals(message.getAuthor().getStringID())) {
                 return true;
             }
         } else {
             for (IRole role : list) {
-                if (role.getID().equals(roleID)) {
+                if (role.getStringID().equals(roleID)) {
                     return true;
                 }
             }
@@ -97,17 +101,28 @@ public class CommandHandler {
     // TODO: 3/29/2017 add an identifier that shows if a command requires something more than the average user
     public String getCommands(IMessage message) {
         //pulls all commands from the commandMap
+        String custPrefix = cfg.getProp("prefix");
+        String prefix;
+        if(custPrefix != null){
+            prefix = custPrefix;
+        }
+        else {
+            prefix = defPrefix;
+        }
         String cmdString = "Here are all the commands available to your rank:\n ```";
         for (String command : commandMap.keySet()) {
             ICommand cmd = commandMap.get(command);
             if (checkPerms(cmd, message)) {
                 cmdString += command +
-                        " - " + cmd.getDesc() +
+                        " - " + cmd.getDesc(prefix) +
                         "\n--------------------------------\n";
             }
         }
         cmdString += "```";
         return cmdString;
+    }
+    public String getPrefix(){
+        return cfg.getProp("prefix");
     }
 
     //gets r9k so the listener can react to r9k

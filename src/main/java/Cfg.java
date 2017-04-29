@@ -33,7 +33,7 @@ class Cfg {
             System.out.println("Startup Message: " + startup);
             prop.setProperty("Startup", startup);
             //gets command prefix
-            System.out.println("Please enter the command prefix: ");
+            System.out.println("Please enter the default command prefix: ");
             String prefix = scanner.nextLine();
             System.out.println("Command prefix: " + prefix);
             prop.setProperty("prefix", prefix);

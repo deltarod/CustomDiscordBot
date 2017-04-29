@@ -17,7 +17,9 @@ class Eta implements ICommand {
     }
 
     @Override
-    public String getDesc() {
-        return "Gives the estimated time until the bot is completed";
+    public String getDesc(String prefix) {
+        return "Gives the estimated time until the bot is completed\n" +
+                "Usage:\n" +
+                prefix + "eta - displays how long until the bot is finished";
     }
 }

@@ -1,6 +1,7 @@
 package Commands;
 
 import Commands.Util.GuildCfg;
+import Commands.Util.Message;
 import Commands.Util.StringSplit;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.handle.obj.IMessage;
@@ -21,8 +22,12 @@ public class Set implements ICommand {
         if (arg[0].equals("admin")) {
             cfg.setProp("admin", id);
         }
-        if (arg[0].equals("owner")) {
+        else if (arg[0].equals("owner")) {
             cfg.setProp("owner", id);
+        }
+        else if (arg[0].equals("prefix")){
+            cfg.setProp("prefix", arg[1]);
+            new Message().builder(client, message.getChannel(), "Prefix set to: " + arg[1]);
         }
     }
 
@@ -37,7 +42,11 @@ public class Set implements ICommand {
     }
 
     @Override
-    public String getDesc() {
-        return "Command to set the privileges hierarchy of the guild";
+    public String getDesc(String prefix) {
+        return "Command to set varies configurations \n" +
+                "Usage: \n" +
+                prefix + "r9k - toggles r9k mode\n" +
+                prefix + "r9k (number) - sets how far to look back\n" +
+                prefix + "r9k limit - displays current r9k limit";
     }
 }

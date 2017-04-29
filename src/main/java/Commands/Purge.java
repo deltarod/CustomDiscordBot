@@ -31,8 +31,9 @@ public class Purge implements ICommand {
     }
 
     @Override
-    public String getDesc() {
-        return "Purges X amount of lines. Usage: (Command prefix)purge X," +
-                " X being the amount of messages that you want deleted.";
+    public String getDesc(String prefix) {
+        return "purges a supplied amount of messages\n" +
+                "Usage:\n" +
+                prefix + "purge (number)";
     }
 }
