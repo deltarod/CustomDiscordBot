@@ -1,6 +1,6 @@
-import Commands.CommandHandler;
-import Commands.R9K;
-import Commands.Util.GuildCfg;
+import commands.CommandHandler;
+import commands.R9K;
+import commands.util.GuildCfg;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.api.events.EventSubscriber;
 import sx.blah.discord.handle.impl.events.ReadyEvent;

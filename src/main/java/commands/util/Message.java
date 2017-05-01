@@ -1,4 +1,4 @@
-package Commands.Util;
+package commands.util;
 
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.handle.obj.IChannel;
@@ -12,8 +12,9 @@ public class Message {
         try {
             new MessageBuilder(client)
                     .withChannel(channel)
-                    .withContent(contents).send();
+                    .withContent(contents).build();
         } catch (Exception e) {
+            //TODO: Add some error handling here
         }
     }
 }

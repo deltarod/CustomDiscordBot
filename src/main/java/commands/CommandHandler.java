@@ -1,8 +1,7 @@
-package Commands;
+package commands;
 
-import Commands.Util.GuildCfg;
-import Commands.Util.Message;
-import Commands.Util.StringSplit;
+import commands.util.GuildCfg;
+import commands.util.Message;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.handle.obj.IMessage;
 import sx.blah.discord.handle.obj.IRole;
@@ -47,7 +46,7 @@ public class CommandHandler {
     public void run(String input, IDiscordClient client, IMessage message) {
         input = input.substring(1);
         //contains [0]command and [1]args
-        String[] commandVar = StringSplit.split(input);
+        String[] commandVar = input.split("\\s+");
         ICommand command;
         //checks if command exists, if not returns breaking the function
 

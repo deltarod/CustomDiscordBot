@@ -1,8 +1,7 @@
-package Commands;
+package commands;
 
-import Commands.Util.GuildCfg;
-import Commands.Util.Message;
-import Commands.Util.StringSplit;
+import commands.util.GuildCfg;
+import commands.util.Message;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.handle.obj.IMessage;
 
@@ -10,13 +9,13 @@ import sx.blah.discord.handle.obj.IMessage;
 public class Set implements ICommand {
     private GuildCfg cfg;
 
-    Set(GuildCfg cfg){
+    Set(GuildCfg cfg) {
         this.cfg = cfg;
     }
 
     @Override
     public void run(IDiscordClient client, String args, IMessage message) {
-        String[] arg = StringSplit.split(args);
+        String[] arg = args.split("\\s+");
         //some regex stuff to only get numbers, not honestly sure how it works
         String id = arg[1].replaceAll("[^0-9]", "");
 
@@ -26,11 +25,11 @@ public class Set implements ICommand {
         }
         //set mod role
         // TODO: 4/30/2017 learn how roles are stored to the list
-        if (arg[0].equals("mod")){
+        if (arg[0].equals("mod")) {
             cfg.setProp("mod", id, "server");
         }
         //set the prefix
-        else if (arg[0].equals("prefix")){
+        else if (arg[0].equals("prefix")) {
             cfg.setProp("prefix", arg[1], "server");
             new Message().builder(client, message.getChannel(), "Prefix set to: " + arg[1]);
         }

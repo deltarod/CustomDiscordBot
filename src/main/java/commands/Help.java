@@ -1,6 +1,6 @@
-package Commands;
+package commands;
 
-import Commands.Util.GuildCfg;
+import commands.util.GuildCfg;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IMessage;
