@@ -13,6 +13,14 @@ public class GuildCfg {
         //gets file location for where properties will be stored based on guild
         String guildId = guild.getStringID();
         path = "GuildCFG/" + guildId + "/";
+        File dir = new File(path);
+        boolean isMade = false;
+        if(!dir.exists()){
+            isMade = dir.mkdirs();
+        }
+        if(isMade){
+            System.out.println("Successfully created " + dir.getPath());
+        }
 
     }
 

@@ -4,9 +4,14 @@ import java.util.Scanner;
 
 class Cfg {
     private Properties prop = new Properties();
-    private String cfg = "cfg.properties";
+    private String cfgName = "cfg.properties";
+    private File cfg;
     private OutputStream output;
     private InputStream input;
+
+    Cfg(){
+        cfg = new File(cfgName);
+    }
 
 
     //Reworked Cfg, now with common set and get properties
@@ -66,7 +71,8 @@ class Cfg {
             input = new FileInputStream(cfg);
             prop.load(input);
         } catch (IOException e) {
-            e.printStackTrace();
+            fileCreate(cfg);
+            read();
         }
     }
 
@@ -87,6 +93,20 @@ class Cfg {
             e.printStackTrace();
         }
 
+    }
+
+    private void fileCreate(File file){
+        //creates file, used in read in case file does not exist
+        boolean isCreated = false;
+        try {
+            isCreated = file.createNewFile();
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+        if(isCreated){
+            System.out.println(file.getName() + " created successfully");
+        }
     }
 
 }
