@@ -1,6 +1,6 @@
-package Commands;
+package commands;
 
-import Commands.Util.Message;
+import commands.util.Message;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.handle.obj.IMessage;
 

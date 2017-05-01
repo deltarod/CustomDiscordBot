@@ -1,8 +1,7 @@
-package Commands;
+package commands;
 
-import Commands.Util.GuildCfg;
-import Commands.Util.IntParse;
-import Commands.Util.Message;
+import commands.util.GuildCfg;
+import commands.util.Message;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.handle.obj.IMessage;
 
@@ -24,11 +23,10 @@ public class F implements  ICommand{
         catch (NullPointerException e){
             respect = null;
         }
-        IntParse parse = new IntParse();
         msg = new Message();
         //parses respect amount
         try {
-            respectCounter = parse.parseInt(respect);
+            respectCounter = Integer.parseInt(respect);
         } catch (NumberFormatException e) {
             //if null on load, reset
             respectCounter = 0;
@@ -68,7 +66,7 @@ public class F implements  ICommand{
                 respectCounter = 0;
             }
             else {
-                respectCounter = new IntParse().parseInt(count);
+                respectCounter = Integer.parseInt(count);
             }
 
 

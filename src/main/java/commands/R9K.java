@@ -1,8 +1,7 @@
-package Commands;
+package commands;
 
-import Commands.Util.GuildCfg;
-import Commands.Util.IntParse;
-import Commands.Util.Message;
+import commands.util.GuildCfg;
+import commands.util.Message;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IMessage;
@@ -14,17 +13,15 @@ public class R9K implements ICommand {
     public boolean isR9k = false;
     private int limit;
     private GuildCfg cfg;
-    private IntParse parse;
     private Message msg;
 
     R9K(GuildCfg cfg) {
         this.cfg = cfg;
-        parse = new IntParse();
         msg = new Message();
 
         //checks if lim exists in properties
         try {
-            limit = parse.parseInt(cfg.getProp("r9klim", "server"));
+            limit = Integer.parseInt(cfg.getProp("r9klim", "server"));
         } catch (Exception e) {
             //sets default prop to 5
             cfg.setProp("r9klim", "5", "server");
@@ -54,7 +51,7 @@ public class R9K implements ICommand {
         else {
             //if args is not an int sends message
             try {
-                limit = parse.parseInt(args);
+                limit = Integer.parseInt(args);
             } catch (NumberFormatException e) {
                 msg.builder(client, channel, "Invalid Number Format");
                 return;
@@ -63,7 +60,7 @@ public class R9K implements ICommand {
             //sets proper limit
             cfg.setProp("r9klim", args, "server");
             if (limit < 1) {
-                limit = parse.parseInt(cfg.getProp("r9klim", "server"));
+                limit = Integer.parseInt(cfg.getProp("r9klim", "server"));
                 msg.builder(client, channel, "Limit defaulted to " + limit + " since number less than 1");
             } else {
                 msg.builder(client, channel, "Limit set to " + limit);

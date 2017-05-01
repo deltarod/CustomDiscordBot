@@ -1,4 +1,4 @@
-package Commands.Util;
+package commands.util;
 
 import sx.blah.discord.handle.obj.IGuild;
 

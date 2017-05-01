@@ -1,6 +1,5 @@
-package Commands;
+package commands;
 
-import Commands.Util.IntParse;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IMessage;
@@ -12,8 +11,7 @@ public class Purge implements ICommand {
     public void run(IDiscordClient client, String args, IMessage message) {
         //gets the message the command comes from
         IChannel channel = message.getChannel();
-        IntParse parse = new IntParse();
-        int parsedInt = parse.parseInt(args);
+        int parsedInt = Integer.parseInt(args);
         //parses the args
 
         if (parsedInt >= 1) {
