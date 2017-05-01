@@ -12,24 +12,28 @@ import sx.blah.discord.util.MessageHistory;
 public class R9K implements ICommand {
     //enables robot9k mode, preventing messages to be similar
     public boolean isR9k = false;
-    public int limit;
-    IntParse parse = new IntParse();
-    Message msg = new Message();
+    private int limit;
+    private GuildCfg cfg;
+    private IntParse parse;
+    private Message msg;
 
     R9K(GuildCfg cfg) {
+        this.cfg = cfg;
+        parse = new IntParse();
+        msg = new Message();
 
         //checks if lim exists in properties
         try {
-            limit = parse.parseInt(cfg.getProp("r9klim"));
+            limit = parse.parseInt(cfg.getProp("r9klim", "server"));
         } catch (Exception e) {
             //sets default prop to 5
-            cfg.setProp("r9klim", "5");
+            cfg.setProp("r9klim", "5", "server");
 
         }
     }
 
     @Override
-    public void run(IDiscordClient client, GuildCfg cfg, String args, IMessage message) {
+    public void run(IDiscordClient client, String args, IMessage message) {
         IChannel channel = message.getChannel();
 
         //if args is null, toggles r9k mode
@@ -44,7 +48,7 @@ public class R9K implements ICommand {
         }
         //if args is limit returns the limit
         else if (args.equals("limit")) {
-            msg.builder(client, channel, "R9k limit is " + cfg.getProp("r9klim"));
+            msg.builder(client, channel, "R9k limit is " + cfg.getProp("r9klim", "server"));
         }
         //sets limit to args
         else {
@@ -57,9 +61,9 @@ public class R9K implements ICommand {
             }
 
             //sets proper limit
-            cfg.setProp("r9klim", args);
+            cfg.setProp("r9klim", args, "server");
             if (limit < 1) {
-                limit = parse.parseInt(cfg.getProp("r9klim"));
+                limit = parse.parseInt(cfg.getProp("r9klim", "server"));
                 msg.builder(client, channel, "Limit defaulted to " + limit + " since number less than 1");
             } else {
                 msg.builder(client, channel, "Limit set to " + limit);
@@ -78,9 +82,10 @@ public class R9K implements ICommand {
     @Override
     public String getDesc(String prefix) {
         return "Switches Server into Robot9k mode," +
-                " Where messages must be unique." +
-                " Use " + prefix + "r9k X, X being amount of messages," +
-                " To set how far to look back per message.";
+                "Usage: \n" +
+                prefix + "r9k - toggles r9k mode\n" +
+                prefix + "r9k (number) - sets how far to look back\n" +
+                prefix + "r9k limit - displays current r9k limit";
     }
 
 
@@ -96,9 +101,7 @@ public class R9K implements ICommand {
         for (IMessage loopMsg : history) {
             //dirty fix since you cant remove a message from a history for some reason?
             //#WORKINGASINTENDED
-            if (loopMsg.equals(message)) {
-                //do nothing
-            } else if (loopMsg.getContent().equals(message.getContent())) {
+            if (!loopMsg.equals(message) && loopMsg.getContent().equals(message.getContent())) {
                 try {
                     try {
                         //creates pm to original user
@@ -107,10 +110,12 @@ public class R9K implements ICommand {
                                 .getOrCreatePMChannel()
                                 .sendMessage("This server is in Robot9K mode, Messages must be unique");
                     } catch (Exception ex) {
+                        ex.printStackTrace();
                     }
                     message.delete();
                     break;
                 } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
 

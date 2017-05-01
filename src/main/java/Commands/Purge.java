@@ -1,8 +1,6 @@
 package Commands;
 
-import Commands.Util.GuildCfg;
 import Commands.Util.IntParse;
-import Commands.Util.Message;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IMessage;
@@ -11,9 +9,8 @@ import sx.blah.discord.util.MessageHistory;
 
 public class Purge implements ICommand {
     @Override
-    public void run(IDiscordClient client, GuildCfg cfg, String args, IMessage message) {
+    public void run(IDiscordClient client, String args, IMessage message) {
         //gets the message the command comes from
-        Message msg = new Message();
         IChannel channel = message.getChannel();
         IntParse parse = new IntParse();
         int parsedInt = parse.parseInt(args);

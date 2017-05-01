@@ -11,43 +11,68 @@ public class F implements  ICommand{
     private String respectUser;
     private Message msg;
     private GuildCfg cfg;
+    private String respect;
 
     F(GuildCfg cfg){
-
-        //loads respect amounts
-        String respect = cfg.getProp("respectCounter");
-        respectUser = cfg.getProp("respectUser");
+        this.cfg = cfg;
+        //gets last respect user
+        respectUser = cfg.getProp("respectUser", "server");
+        //gets the current users respect amount
+        try {
+            respect = cfg.getProp(respectUser, "respect");
+        }
+        catch (NullPointerException e){
+            respect = null;
+        }
         IntParse parse = new IntParse();
         msg = new Message();
-        //parses respectamount
+        //parses respect amount
         try {
             respectCounter = parse.parseInt(respect);
-        } catch (NumberFormatException e) {}
+        } catch (NumberFormatException e) {
+            //if null on load, reset
+            respectCounter = 0;
+        }
+        catch (NullPointerException e){
+            System.out.println("lmao");
+        }
     }
 
-    private void counterReset(){
-        respectCounter = 0;
-        cfg.setProp("respectcounter", respectCounter + "");
-    }
     @Override
-    public void run(IDiscordClient client, GuildCfg cfg, String args, IMessage message) {
-        this.cfg = cfg;
+    public void run(IDiscordClient client, String args, IMessage message) {
         if(args == null){
             if(respectUser == null) {
                 msg.builder(client, message.getChannel(), "User to pay respects to has not been set");
-                counterReset();
+
             }else {
                 respectCounter++;
-                cfg.setProp("respectcounter", respectCounter + "");
+                cfg.setProp(respectUser, respectCounter + "", "respect");
                 msg.builder(client, message.getChannel(), "Respects have been paid to " + respectUser + " " + respectCounter + " times");
             }
         }
         else if(args.startsWith("<")) {
-            //String id = args.replaceAll("[^0-9]", "");
+            //stores current respects in properties file
+            if(respectUser != null) {
+                cfg.setProp(respectUser, respectCounter + "", "respect");
+            }
+
+            //sets current respect user
             respectUser = args;
-            cfg.setProp("respectuser", respectUser);
-            counterReset();
-            run(client, cfg, null, message);
+            //sets current respect user in server config
+            cfg.setProp("respectuser" , respectUser, "server");
+            //recursivly run run with a null arg, adding 1 respect to current user
+
+            String count = cfg.getProp(respectUser, "respect");
+
+            if(count == null){
+                respectCounter = 0;
+            }
+            else {
+                respectCounter = new IntParse().parseInt(count);
+            }
+
+
+            run(client, null, message);
         }
 
 

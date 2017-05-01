@@ -4,7 +4,6 @@ import Commands.Util.GuildCfg;
 import Commands.Util.Message;
 import Commands.Util.StringSplit;
 import sx.blah.discord.api.IDiscordClient;
-import sx.blah.discord.handle.obj.IGuild;
 import sx.blah.discord.handle.obj.IMessage;
 import sx.blah.discord.handle.obj.IRole;
 
@@ -16,26 +15,30 @@ import java.util.Map;
 public class CommandHandler {
     private Map<String, ICommand> commandMap = new HashMap<>();
     private GuildCfg cfg;
-    private String defPrefix;
+    private String defaultPrefix;
+    private String owner;
 
 
-    public CommandHandler(IGuild guild, GuildCfg cfg, String defPrefix) {
+    public CommandHandler(GuildCfg cfg, String defaultPrefix, String owner) {
         this.cfg = cfg;
-        this.defPrefix = defPrefix;
+        this.owner = owner;
+        this.defaultPrefix = defaultPrefix;
+
+        //checks if a prefix has been set
+
         // TODO: 3/29/2017 More commands, expand upon current
         // TODO: 3/29/2017 Audio clip player on command maybe
         //puts all base commands into a map to call from later
         commandMap.put("purge", new Purge());
-        commandMap.put("help", new Help(defPrefix));
+        commandMap.put("help", new Help(getPrefix(), owner, cfg));
         commandMap.put("eta", new Eta());
         commandMap.put("r9k", new R9K(cfg));
-        commandMap.put("set", new Set());
+        commandMap.put("set", new Set(cfg));
         commandMap.put("shutdown",new Shutdown());
         commandMap.put("f", new F(cfg));
 
 
-
-        //disabled for jar
+        // TODO: 4/30/2017 Todo command
         //commandMap.put("todo", new Todo());
 
     }
@@ -44,9 +47,11 @@ public class CommandHandler {
     public void run(String input, IDiscordClient client, IMessage message) {
         input = input.substring(1);
         //contains [0]command and [1]args
-        String[] commandVar = new StringSplit().split(input);
+        String[] commandVar = StringSplit.split(input);
         ICommand command;
         //checks if command exists, if not returns breaking the function
+
+        //gets current command executed
         try {
             command = commandMap.get(commandVar[0]);
         } catch (Exception e) {
@@ -55,7 +60,7 @@ public class CommandHandler {
         }
         //checks if perms are good, if so runs command
         if (checkPerms(command, message)) {
-            command.run(client, cfg, commandVar[1], message);
+            command.run(client, commandVar[getPrefix().length()], message);
         }
         //if perms are not good tells them what they need
         else {
@@ -72,22 +77,20 @@ public class CommandHandler {
         //admin
 
         String roleID = null;
-        String owner = null;
         List<IRole> list = message.getAuthor().getRolesForGuild(message.getGuild());
         //gets roleID and owner, might be null if not configured.
         try {
-            roleID = cfg.getProp(command.getRole());
-            owner = cfg.getProp("owner");
+            roleID = cfg.getProp(command.getRole(), "server");
         } catch (Exception e) {
+            System.out.println(command.getRole() + " not set");
         }
         if (command.getRole() == null) {
             return true;
         }
-        if (owner != null) {
-            if (owner.equals(message.getAuthor().getStringID())) {
-                return true;
-            }
-        } else {
+        else if (owner.equals(message.getAuthor().getStringID())) {
+            return true;
+        }
+        else {
             for (IRole role : list) {
                 if (role.getStringID().equals(roleID)) {
                     return true;
@@ -99,30 +102,29 @@ public class CommandHandler {
     }
 
     // TODO: 3/29/2017 add an identifier that shows if a command requires something more than the average user
-    public String getCommands(IMessage message) {
+    String getCommands(IMessage message) {
         //pulls all commands from the commandMap
-        String custPrefix = cfg.getProp("prefix");
-        String prefix;
-        if(custPrefix != null){
-            prefix = custPrefix;
-        }
-        else {
-            prefix = defPrefix;
-        }
-        String cmdString = "Here are all the commands available to your rank:\n ```";
+        StringBuilder builder = new StringBuilder("Here are all the commands available to your rank:\n ```");
         for (String command : commandMap.keySet()) {
             ICommand cmd = commandMap.get(command);
             if (checkPerms(cmd, message)) {
-                cmdString += command +
-                        " - " + cmd.getDesc(prefix) +
-                        "\n--------------------------------\n";
+                builder.append(command);
+                builder.append(" - ");
+                builder.append(cmd.getDesc(getPrefix()));
+                builder.append("\n--------------------------------\n");
             }
         }
-        cmdString += "```";
-        return cmdString;
+        builder.append("```");
+        return builder.toString();
     }
     public String getPrefix(){
-        return cfg.getProp("prefix");
+        String guildPrefix = cfg.getProp("prefix", "server");
+        if(guildPrefix != null){
+            return guildPrefix;
+        }
+        else {
+            return defaultPrefix;
+        }
     }
 
     //gets r9k so the listener can react to r9k

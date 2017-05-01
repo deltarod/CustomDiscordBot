@@ -5,90 +5,88 @@ import java.util.Scanner;
 class Cfg {
     private Properties prop = new Properties();
     private String cfg = "cfg.properties";
-    OutputStream output;
-    InputStream input;
-    //creates new cfg.properties
+    private OutputStream output;
+    private InputStream input;
 
-    // TODO: 3/22/2017 read, write, and a common propertyReader
-    public void cfgCreate() {
+
+    //Reworked Cfg, now with common set and get properties
+    private String setProp(String property){
+        //gets needed value
         Scanner scanner = new Scanner(System.in);
+        System.out.println("Please enter your " + property + ": ");
+        String returnVal = scanner.nextLine();
+        System.out.println(" you entered " + returnVal + ". Is this correct? (Y/N)");
+        String yn = scanner.nextLine().toLowerCase();
 
+        //checks if value is correct
+        switch (yn){
+            case "y":
+                break;
+            default:
+                returnVal = setProp(property);
+                break;
+        }
+        //just in case the cfg is already created
+        read();
+        finishRead();
+        //loads output stream
         try {
             output = new FileOutputStream(cfg);
-            System.out.println("Please enter your token: ");
-            //takes in token from console
-            String token = scanner.nextLine();
-            //repeats token and stores
-            System.out.println("You entered: " + token);
-            prop.setProperty("Token", token);
-
-            //gets home text channel
-            System.out.println("Please enter the home text channel: ");
-            String homeChannel = scanner.nextLine();
-            System.out.println("Home Channel: " + homeChannel);
-            prop.setProperty("HomeChannel", homeChannel);
-            //gets startup Message
-            System.out.println("Please enter the startup Message: ");
-            String startup = scanner.nextLine();
-            System.out.println("Startup Message: " + startup);
-            prop.setProperty("Startup", startup);
-            //gets command prefix
-            System.out.println("Please enter the default command prefix: ");
-            String prefix = scanner.nextLine();
-            System.out.println("Command prefix: " + prefix);
-            prop.setProperty("prefix", prefix);
-
-
-            prop.store(output, null);
-        } catch (IOException e) {
+        }
+        catch (FileNotFoundException e){
+            e.printStackTrace();
         }
 
+        prop.setProperty(property, returnVal);
+        finishWrite();
+        return returnVal;
     }
+
+    //loads property
+    String getProp(String property){
+        read();
+        String returnVal;
+
+        returnVal = prop.getProperty(property);
+
+        if(returnVal == null) {
+            System.out.println("The " + property + " does not exist, please set it now");
+            returnVal = setProp(property);
+        }
+
+
+        System.out.println("Your " + property + " is: " + returnVal);
+        return returnVal;
+
+    }
+
 
     private void read() {
         try {
             input = new FileInputStream(cfg);
             prop.load(input);
         } catch (IOException e) {
+            e.printStackTrace();
         }
     }
-    //loads token
 
-    public String tokenRead() {
-        read();
-        String token;
-        token = prop.getProperty("Token");
-        //repeats token
-        System.out.println("Your Token is: " + token);
 
-        return token;
+    private void finishWrite(){
+        try {
+            prop.store(output, null);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    public String homeChannelRead() {
-        read();
-        String channel = prop.getProperty("HomeChannel");
-        //repeats Channel
-        System.out.println("Your Home Channel is: " + channel);
+    private void finishRead(){
+        try {
+            input.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
-        return channel;
-    }
-
-    public String startupRead() {
-        read();
-        String startup = prop.getProperty("Startup");
-
-        System.out.println("Your startup Message is: " + startup);
-
-        return startup;
-    }
-
-    public String prefixRead() {
-        read();
-        String prefix = prop.getProperty("prefix");
-
-        System.out.println("Your prefix is: " + prefix);
-
-        return prefix;
     }
 
 }

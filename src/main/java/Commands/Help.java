@@ -7,14 +7,20 @@ import sx.blah.discord.handle.obj.IMessage;
 
 
 class Help implements ICommand {
-    String defaultPrefix;
+    private String defaultPrefix;
+    private String owner;
+    private GuildCfg cfg;
 
-    Help(String defaultPrefix){
+
+
+    Help(String defaultPrefix, String owner, GuildCfg cfg){
         this.defaultPrefix = defaultPrefix;
+        this.cfg = cfg;
+        this.owner = owner;
     }
     @Override
-    public void run(IDiscordClient client, GuildCfg cfg, String args, IMessage message) {
-        String commands = new CommandHandler(message.getGuild(), cfg, defaultPrefix).getCommands(message);
+    public void run(IDiscordClient client, String args, IMessage message) {
+        String commands = new CommandHandler(cfg, defaultPrefix, owner).getCommands(message);
         IChannel channel = message.getChannel();
         //sends PM's with command
         message.getAuthor()

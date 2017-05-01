@@ -1,13 +1,12 @@
 package Commands;
 
-import Commands.Util.GuildCfg;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.handle.obj.IMessage;
 
 public class Shutdown implements ICommand {
     //quickly made
     @Override
-    public void run(IDiscordClient client, GuildCfg cfg, String args, IMessage message) {
+    public void run(IDiscordClient client, String args, IMessage message) {
         client.logout();
     }
 

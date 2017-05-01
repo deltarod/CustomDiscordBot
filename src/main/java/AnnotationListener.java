@@ -10,63 +10,49 @@ import sx.blah.discord.handle.obj.IGuild;
 import sx.blah.discord.handle.obj.IMessage;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class AnnotationListener {
-    IDiscordClient client;
-    IMessage currentMessage;
-    String homeChannel;
-    String startup;
-    String prefix;
-    Map<IGuild, CommandHandler> guildMap;
+    private IDiscordClient client;
+    private IMessage currentMessage;
+    private String prefix;
+    private Map<IGuild, CommandHandler> guildMap;
+    private String owner;
 
-    AnnotationListener(IDiscordClient client, String HomeChannel, String startup, String prefix) {
+    AnnotationListener(IDiscordClient client, String owner, String prefix) {
         this.client = client;
-        this.homeChannel = HomeChannel;
-        this.startup = startup;
         this.prefix = prefix;
+        this.owner = owner;
         guildMap = new HashMap<>();
 
     }
 
     @EventSubscriber
     public void onReadyEvent(ReadyEvent event) {
-        client.online("The Purge");
+        client.online("F to pay respects");
         System.out.println("Ready to go!");
-        List<IGuild> list = client.getGuilds();
-
-        //cant be in the initialization
-
-        for (IGuild guild : list) {
-            // TODO: 4/29/2017 custom server prefix
-
-            guildMap.put(guild, new CommandHandler(guild, new GuildCfg(guild),prefix));
-        }
     }
 
     //tells bot what to do when joining a new guild
     @EventSubscriber
     public void onGuildJoin(GuildCreateEvent event) {
         //adds new guild on join, not requiring a bot restart
-        guildMap.put(event.getGuild(), new CommandHandler(event.getGuild(), new GuildCfg(event.getGuild()), prefix));
+        guildMap.put(event.getGuild(), new CommandHandler(new GuildCfg(event.getGuild()), prefix, owner));
     }
 
     @EventSubscriber
     public void onMessageReceived(MessageReceivedEvent event) {
         //added multiGuild capabilities!
-
-        //gets current message and pulls the guild from the guild
         currentMessage = event.getMessage();
+        //gets command handler of message's guild
         CommandHandler command = guildMap.get(currentMessage.getGuild());
-        String setPrefix = command.getPrefix();
-        if(setPrefix != null){
-            prefix = setPrefix;
-        }
+
+        //gets current guild prefix
+        String guildPrefix = command.getPrefix();
 
         R9K r9k = command.getR9K();
         //original code just using the new command pulled from the guildMap
-        if (currentMessage.getContent().startsWith(prefix)) {
+        if (currentMessage.getContent().startsWith(guildPrefix)) {
             command.run(currentMessage.getContent().toLowerCase(), client, currentMessage);
         }
         //if command skips the r9k check
