@@ -25,6 +25,7 @@ public class Set implements ICommand {
             cfg.setProp("admin", id, "server");
         }
         //set mod role
+        // TODO: 4/30/2017 learn how roles are stored to the list
         if (arg[0].equals("mod")){
             cfg.setProp("mod", id, "server");
         }

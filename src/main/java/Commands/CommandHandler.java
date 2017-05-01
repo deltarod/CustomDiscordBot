@@ -79,15 +79,18 @@ public class CommandHandler {
         String roleID = null;
         List<IRole> list = message.getAuthor().getRolesForGuild(message.getGuild());
         //gets roleID and owner, might be null if not configured.
+
+        if (command.getRole() == null) {
+            return true;
+        }
+
         try {
             roleID = cfg.getProp(command.getRole(), "server");
         } catch (Exception e) {
             System.out.println(command.getRole() + " not set");
         }
-        if (command.getRole() == null) {
-            return true;
-        }
-        else if (owner.equals(message.getAuthor().getStringID())) {
+
+        if (owner.equals(message.getAuthor().getStringID())) {
             return true;
         }
         else {
