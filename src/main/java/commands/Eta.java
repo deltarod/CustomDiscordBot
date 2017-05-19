@@ -7,7 +7,7 @@ import sx.blah.discord.handle.obj.IMessage;
 class Eta implements ICommand {
     @Override
     public void run(IDiscordClient client, String args, IMessage message) {
-        new Message().builder(client, message.getChannel(), "ETA until done?: Never");
+        Message.builder(client, message, "ETA until done?: Never");
     }
 
     @Override

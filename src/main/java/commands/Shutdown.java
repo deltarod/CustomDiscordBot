@@ -19,6 +19,6 @@ public class Shutdown implements ICommand {
     public String getDesc(String prefix) {
         return "Shuts down the server.\n" +
                 "Usage:\n" +
-                prefix + "shutdown";
+                prefix + "shutdown - shuts down bot";
     }
 }

@@ -3,7 +3,6 @@ package commands;
 import commands.util.GuildCfg;
 import commands.util.Message;
 import sx.blah.discord.api.IDiscordClient;
-import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IMessage;
 import sx.blah.discord.util.MessageHistory;
 
@@ -13,11 +12,9 @@ public class R9K implements ICommand {
     public boolean isR9k = false;
     private int limit;
     private GuildCfg cfg;
-    private Message msg;
 
     R9K(GuildCfg cfg) {
         this.cfg = cfg;
-        msg = new Message();
 
         //checks if lim exists in properties
         try {
@@ -31,7 +28,6 @@ public class R9K implements ICommand {
 
     @Override
     public void run(IDiscordClient client, String args, IMessage message) {
-        IChannel channel = message.getChannel();
 
         //if args is null, toggles r9k mode
         if (args == null) {
@@ -41,11 +37,11 @@ public class R9K implements ICommand {
             if (isR9k) returnMessage = "R9K is enabled.";
             else returnMessage = "R9K is disabled.";
 
-            msg.builder(client, channel, returnMessage);
+            Message.builder(client, message, returnMessage);
         }
         //if args is limit returns the limit
         else if (args.equals("limit")) {
-            msg.builder(client, channel, "R9k limit is " + cfg.getProp("r9klim", "server"));
+            Message.builder(client, message, "R9k limit is " + cfg.getProp("r9klim", "server"));
         }
         //sets limit to args
         else {
@@ -53,7 +49,7 @@ public class R9K implements ICommand {
             try {
                 limit = Integer.parseInt(args);
             } catch (NumberFormatException e) {
-                msg.builder(client, channel, "Invalid Number Format");
+                Message.builder(client, message, "Invalid Number Format");
                 return;
             }
 
@@ -61,9 +57,9 @@ public class R9K implements ICommand {
             cfg.setProp("r9klim", args, "server");
             if (limit < 1) {
                 limit = Integer.parseInt(cfg.getProp("r9klim", "server"));
-                msg.builder(client, channel, "Limit defaulted to " + limit + " since number less than 1");
+                Message.builder(client, message, "Limit defaulted to " + limit + " since number less than 1");
             } else {
-                msg.builder(client, channel, "Limit set to " + limit);
+                Message.builder(client, message, "Limit set to " + limit);
             }
 
         }

@@ -5,34 +5,32 @@ import commands.util.Message;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.handle.obj.IMessage;
 
+/*
+ * Command to keep track of respects of users, will save users in a properties file
+ */
+
 public class F implements  ICommand{
     private int respectCounter;
     private String respectUser;
-    private Message msg;
     private GuildCfg cfg;
-    private String respect;
 
     F(GuildCfg cfg){
         this.cfg = cfg;
         //gets last respect user
         respectUser = cfg.getProp("respectUser", "server");
         //gets the current users respect amount
-        try {
-            respect = cfg.getProp(respectUser, "respect");
-        }
-        catch (NullPointerException e){
-            respect = null;
-        }
-        msg = new Message();
+        String respect = cfg.getProp(respectUser, "respect");
+
         //parses respect amount
         try {
             respectCounter = Integer.parseInt(respect);
-        } catch (NumberFormatException e) {
+        }
+        catch (NumberFormatException e) {
             //if null on load, reset
             respectCounter = 0;
         }
         catch (NullPointerException e){
-            System.out.println("lmao");
+            //do nothing if user does not exist
         }
     }
 
@@ -40,12 +38,12 @@ public class F implements  ICommand{
     public void run(IDiscordClient client, String args, IMessage message) {
         if(args == null){
             if(respectUser == null) {
-                msg.builder(client, message.getChannel(), "User to pay respects to has not been set");
+                Message.builder(client, message, "User to pay respects to has not been set");
 
             }else {
                 respectCounter++;
                 cfg.setProp(respectUser, respectCounter + "", "respect");
-                msg.builder(client, message.getChannel(), "Respects have been paid to " + respectUser + " " + respectCounter + " times");
+                Message.builder(client, message, "Respects have been paid to " + respectUser + " " + respectCounter + " times");
             }
         }
         else if(args.startsWith("<")) {

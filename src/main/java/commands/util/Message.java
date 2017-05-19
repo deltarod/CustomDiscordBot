@@ -1,17 +1,16 @@
 package commands.util;
 
 import sx.blah.discord.api.IDiscordClient;
-import sx.blah.discord.handle.obj.IChannel;
+import sx.blah.discord.handle.obj.IMessage;
 import sx.blah.discord.util.MessageBuilder;
 
-/**
- * Created by Tlap on 3/22/2017.
- */
 public class Message {
-    public void builder(IDiscordClient client, IChannel channel, String contents) {
+
+    //sends message using sent message, using message.getChannel()
+    public static void builder(IDiscordClient client, IMessage message, String contents) {
         try {
             new MessageBuilder(client)
-                    .withChannel(channel)
+                    .withChannel(message.getChannel())
                     .withContent(contents).build();
         } catch (Exception e) {
             //TODO: Add some error handling here
