@@ -5,13 +5,15 @@ import commands.util.Message;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.handle.obj.IMessage;
 
-
-public class Set implements ICommand {
+/*
+ * Used to set various config settings, like bot roles
+ */
+public class SetCfg implements ICommand {
     private GuildCfg cfg;
     private IDiscordClient client;
     private IMessage msg;
 
-    Set(GuildCfg cfg) {
+    SetCfg(GuildCfg cfg) {
         this.cfg = cfg;
     }
 
@@ -20,8 +22,6 @@ public class Set implements ICommand {
         this.client = client;
         this.msg = msg;
         String[] arg = args.split("\\s+");
-        //System.out.println("Args: " + args);
-        //System.out.println("Contents: " + msg.getContent());
         //some regex stuff to only get numbers, not honestly sure how it works
         String id = arg[1].replaceAll("[^0-9]", "");
         //set admin role

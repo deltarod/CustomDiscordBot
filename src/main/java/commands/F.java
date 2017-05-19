@@ -1,9 +1,13 @@
 package commands;
 
 import commands.util.GuildCfg;
+import commands.util.Leaderboard;
 import commands.util.Message;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.handle.obj.IMessage;
+import sx.blah.discord.handle.obj.IUser;
+
+import java.util.Set;
 
 /*
  * Command to keep track of respects of users, will save users in a properties file
@@ -56,7 +60,7 @@ public class F implements  ICommand{
             respectUser = args;
             //sets current respect user in server config
             cfg.setProp("respectuser" , respectUser, "server");
-            //recursivly run run with a null arg, adding 1 respect to current user
+            //recursively run run with a null arg, adding 1 respect to current user
 
             String count = cfg.getProp(respectUser, "respect");
 
@@ -69,6 +73,31 @@ public class F implements  ICommand{
 
 
             run(client, null, message);
+        }
+        else if(args.equalsIgnoreCase("leaderboard")){
+            Leaderboard<Integer, IUser> leaderboard = new Leaderboard<>();
+            Set<String> users = cfg.getAllKeys("respect");
+            for(String userStr : users){
+
+                int score = Integer.parseInt(cfg.getProp(userStr, "respect"));
+
+                IUser user = message.getGuild().getUserByID(Long.parseLong(userStr.replaceAll("[^0-9]", "")));
+                leaderboard.put(score, user);
+            }
+
+            StringBuilder sb = new StringBuilder("```Respects Leaderboard \n");
+            //gets top 10 respect amounts or total respects, whatever comes first
+            for(int i = 0; i < leaderboard.getSize() && i < 10; i++){
+                sb.append(leaderboard.getCurrentValue().getName());
+                sb.append(" : ");
+                sb.append(leaderboard.getCurrentKey());
+                sb.append("\n");
+                leaderboard.next();
+            }
+            //close code bracket
+            sb.append("```");
+            Message.builder(client, message, sb.toString());
+
         }
 
 

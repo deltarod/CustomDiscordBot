@@ -29,7 +29,7 @@ public class AnnotationListener {
 
     @EventSubscriber
     public void onReadyEvent(ReadyEvent event) {
-        client.online("F to pay respects");
+        client.online("Respect the leaderboard!");
         System.out.println("Ready to go!");
     }
 

@@ -4,6 +4,7 @@ import sx.blah.discord.handle.obj.IGuild;
 
 import java.io.*;
 import java.util.Properties;
+import java.util.Set;
 
 public class GuildCfg {
     private String path;
@@ -35,6 +36,13 @@ public class GuildCfg {
         return value;
 
 
+    }
+
+    public Set<String> getAllKeys(String config) {
+        Properties prop = new Properties();
+        File cfg = new File(path + config + ".properties");
+        read(cfg, prop);
+        return prop.stringPropertyNames();
     }
 
     //sets ID

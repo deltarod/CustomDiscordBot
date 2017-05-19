@@ -34,7 +34,7 @@ public class CommandHandler {
         commandMap.put("help", new Help(getPrefix(), owner, cfg));
         commandMap.put("eta", new Eta());
         commandMap.put("r9k", new R9K(cfg));
-        commandMap.put("set", new Set(cfg));
+        commandMap.put("set", new SetCfg(cfg));
         commandMap.put("shutdown",new Shutdown());
         commandMap.put("f", new F(cfg));
         commandMap.put("check", new Check(cfg));
@@ -61,7 +61,13 @@ public class CommandHandler {
         }
         //checks if perms are good, if so runs command
         if (checkPerms(command, message)){
-            command.run(client, commandVar[1], message);
+            try {
+                command.run(client, commandVar[1], message);
+            }
+            //if arg[1] does not exist, pass null args val
+            catch (ArrayIndexOutOfBoundsException e){
+                command.run(client, null, message);
+            }
         }
         //if perms are not good tells them what they need
         else {
@@ -81,20 +87,19 @@ public class CommandHandler {
         if (command.getRole() == null) {
             return true;
         }
-        long roleID = 0;
-    //gets roleID and owner, might be null if not configured.
-        try {
-            String stringID = cfg.getProp(command.getRole(), "server");
-            roleID = Long.parseLong(stringID);
-        } catch (Exception e) {
-            Message.builder(client, message, command.getRole() + " not set");
-        }
-
-        if (owner.equals(message.getAuthor().getStringID())) {
+        else if (owner.equals(message.getAuthor().getStringID())) {
             return true;
         }
         else {
             try {
+                long roleID = 0;
+                //gets roleID and owner, might be null if not configured.
+                try {
+                    String stringID = cfg.getProp(command.getRole(), "server");
+                    roleID = Long.parseLong(stringID);
+                } catch (Exception e) {
+                    Message.builder(client, message, command.getRole() + " not set");
+                }
                 IRole currentRole = message.getGuild().getRoleByID(roleID);
                 for (IRole role : list) {
                     //System.out.println("Role: " + role.getPosition() + " | Current Role: " + currentRole.getPosition());

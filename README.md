@@ -18,10 +18,10 @@ Working Commands:
  Shutdown - Shuts the bot down
  
  F - F to pay respects
+ 
+ check - used to check various config settings
   
  In Progress:
- 
-
  
  Todo - todo list and reminder
 

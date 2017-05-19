@@ -29,6 +29,7 @@ public class Purge implements ICommand {
     public String getDesc(String prefix) {
         return "purges a supplied amount of messages\n" +
                 "Usage:\n" +
+                "DISABLED UNTIL FURTHER NOTICE \n" +
                 prefix + "purge (number)";
     }
 }
