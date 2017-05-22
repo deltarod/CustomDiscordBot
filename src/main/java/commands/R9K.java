@@ -83,8 +83,11 @@ public class R9K implements ICommand {
 
 
     //handles the checking for nonunique messages
-    public void handle(IMessage message) {
+    public boolean handle(IMessage message) {
         //pulls latest messages on call
+        if(message.getContent().contains("r9k")){
+            return false;
+        }
         MessageHistory history = message.getChannel().getMessageHistory(limit + 1);
 
 
@@ -106,7 +109,7 @@ public class R9K implements ICommand {
                         ex.printStackTrace();
                     }
                     message.delete();
-                    break;
+                    return true;
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -114,6 +117,6 @@ public class R9K implements ICommand {
 
         }
 
-
+        return false;
     }
 }
