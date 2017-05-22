@@ -10,8 +10,6 @@ import sx.blah.discord.handle.obj.IMessage;
  */
 public class SetCfg implements ICommand {
     private GuildCfg cfg;
-    private IDiscordClient client;
-    private IMessage msg;
 
     SetCfg(GuildCfg cfg) {
         this.cfg = cfg;
@@ -19,8 +17,6 @@ public class SetCfg implements ICommand {
 
     @Override
     public void run(IDiscordClient client, String args, IMessage msg) {
-        this.client = client;
-        this.msg = msg;
         String[] arg = args.split("\\s+");
         //some regex stuff to only get numbers, not honestly sure how it works
         String id = arg[1].replaceAll("[^0-9]", "");

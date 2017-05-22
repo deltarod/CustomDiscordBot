@@ -45,34 +45,45 @@ public class F implements  ICommand{
                 Message.builder(client, message, "User to pay respects to has not been set");
 
             }else {
-                respectCounter++;
-                cfg.setProp(respectUser, respectCounter + "", "respect");
-                Message.builder(client, message, "Respects have been paid to " + respectUser + " " + respectCounter + " times");
+                if(!message.getAuthor().getStringID().equalsIgnoreCase(respectUser.replaceAll("[^0-9]", ""))) {
+                    respectCounter++;
+                    cfg.setProp(respectUser, respectCounter + "", "respect");
+                    Message.builder(client, message, "Respects have been paid to " + respectUser + " " + respectCounter + " times");
+                }
+                else {
+                    message.reply("You cant respect yourself ya fool");
+                }
             }
         }
         else if(args.startsWith("<")) {
-            //stores current respects in properties file
-            if(respectUser != null) {
-                cfg.setProp(respectUser, respectCounter + "", "respect");
-            }
+            //quick fix to prevent additional text from messing stuff up
+            String[] arg = args.split("\\s", 0);
+            //stores current respect user
+            cfg.setProp(respectUser, respectCounter + "", "respect");
+
 
             //sets current respect user
-            respectUser = args;
-            //sets current respect user in server config
-            cfg.setProp("respectuser" , respectUser, "server");
-            //recursively run run with a null arg, adding 1 respect to current user
+            respectUser = arg[0];
+            if(!message.getAuthor().getStringID().equalsIgnoreCase(respectUser.replaceAll("[^0-9]", ""))) {
+                //sets current respect user in server config
+                cfg.setProp("respectuser", respectUser, "server");
+                //recursively run run with a null arg, adding 1 respect to current user
 
-            String count = cfg.getProp(respectUser, "respect");
+                String count = cfg.getProp(respectUser, "respect");
 
-            if(count == null){
-                respectCounter = 0;
+                if (count == null) {
+                    respectCounter = 0;
+                } else {
+                    respectCounter = Integer.parseInt(count);
+                }
+
+
+                run(client, null, message);
             }
             else {
-                respectCounter = Integer.parseInt(count);
+                message.reply("You cant respect yourself ya fool");
             }
 
-
-            run(client, null, message);
         }
         else if(args.equalsIgnoreCase("leaderboard")){
             Leaderboard<Integer, IUser> leaderboard = new Leaderboard<>();
