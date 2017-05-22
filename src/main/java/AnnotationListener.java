@@ -51,14 +51,16 @@ public class AnnotationListener {
         String guildPrefix = command.getPrefix();
 
         R9K r9k = command.getR9K();
+        //r9k gets handled before commands now
+        if (r9k.isR9k) {
+            r9k.handle(currentMessage);
+        }
         //original code just using the new command pulled from the guildMap
-        if (currentMessage.getContent().startsWith(guildPrefix)) {
+        if (currentMessage.getContent().startsWith(guildPrefix) && !currentMessage.isDeleted()) {
             command.run(currentMessage.getContent().toLowerCase(), client, currentMessage);
         }
         //if command skips the r9k check
-        else if (r9k.isR9k) {
-            r9k.handle(currentMessage);
-        }
+
     }
 }
 

@@ -63,12 +63,11 @@ public class F implements  ICommand{
 
 
             //sets current respect user
-            respectUser = arg[0];
-            if(!message.getAuthor().getStringID().equalsIgnoreCase(respectUser.replaceAll("[^0-9]", ""))) {
-                //sets current respect user in server config
-                cfg.setProp("respectuser", respectUser, "server");
-                //recursively run run with a null arg, adding 1 respect to current user
 
+
+            if(!message.getAuthor().getStringID().equalsIgnoreCase(arg[0].replaceAll("[^0-9]", ""))) {
+                //sets current respect user in server config
+                respectUser = arg[0];
                 String count = cfg.getProp(respectUser, "respect");
 
                 if (count == null) {
@@ -76,7 +75,8 @@ public class F implements  ICommand{
                 } else {
                     respectCounter = Integer.parseInt(count);
                 }
-
+                cfg.setProp("respectuser", respectUser, "server");
+                //recursively run run with a null arg, adding 1 respect to current user
 
                 run(client, null, message);
             }
